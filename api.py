@@ -12,6 +12,7 @@ app.config['SECRET_KEY'] = 'thisissecret'
 
 # sqlite:///c:/absolute/path/to/mysql.db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/HP/api_example/todo.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #added
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -146,7 +147,7 @@ def login():
     if check_password_hash(user.password, auth.password):
         token = jwt.encode({'public_id' : user.public_id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
         
-        return jsonify({'token': token})
+        return jsonify({'token': token}) #changed
 
     return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
 
